@@ -11,7 +11,7 @@
         
   <c:if test="${selectedAcc != null}">
             <h2>Add User</h2>
-            <form method="POST" action="users">
+            <form method="POST" action="user">
                 <div>
                     <input type="email" name="emailADD" value="${emailATTAdd}" placeholder = "Email">
                     <br>
@@ -64,7 +64,7 @@
     </table>
     <c:if test="${selectedAcc != null}">
         <h2>Edit User</h2>
-        <form method="POST" action="users">
+        <form method="POST" action="user">
             <div>
                 <input type="email" name="emailEdit" value="${emailATTEdit}" placeholder = "Email">
                 <br>
@@ -88,7 +88,7 @@
             </div>
         </form>
     </form>
-    <form action="users" method="POST">
+    <form action="user" method="POST">
         <input type="hidden" name="action" value="delete">
         <input  style="height:21px;width:176px;margin-top:5px" type="submit" value="Delete">
     </form>

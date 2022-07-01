@@ -1,6 +1,8 @@
 
 package servlets;
 
+import dataaccess.RoleDB;
+import dataaccess.UserDB;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,7 +21,8 @@ import services.UserService;
  */
 public class UserServlet extends HttpServlet {
 
-  
+  UserDB userdb = new UserDB();
+  RoleDB roledb = new RoleDB();
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -127,7 +130,7 @@ public class UserServlet extends HttpServlet {
 
                 try {
 
-                    List<User> users = us.getAll();  
+                    List<User> users = userdb.getAll();  
                     request.setAttribute("users", users);
                 } catch (Exception ex) {
                     Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -143,7 +146,7 @@ public class UserServlet extends HttpServlet {
             try {
 
                 userOne = new User(emailADD, status, fNameADD, lNameADD, passwordADD, roleADD);
-                us.insert(userOne);
+                userdb.insert(userOne);
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -153,12 +156,17 @@ public class UserServlet extends HttpServlet {
         String actionADD = (String) request.getParameter("actionADD");
         String actionEdit = (String) request.getParameter("actionEdit");
 
-        if (actionADD != null && actionADD.equals("save")) {
+        if (actionADD != null && actionADD.equals("edit")) {
 
             uEdit = new User(request.getParameter("emailEdit"), Boolean.parseBoolean(request.getParameter("activeEdit")),
                     request.getParameter("fNameEdit"), request.getParameter("lNameEdit"),
-                    request.getParameter("passwordEdit"), Integer.parseInt((request.getParameter("roleEdit"))));
-
+                    request.getParameter("passwordEdit"), Integer.parseInt((request.getParameter("roleADD"))));
+            
+             try {
+                 userdb.update(uEdit);
+             } catch (Exception ex) {
+                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+             }
             response.sendRedirect("user");
 
         } else if (actionEdit != null && actionEdit.equals("save")) {
@@ -167,6 +175,8 @@ public class UserServlet extends HttpServlet {
         }
     }
         
+    
+    
         
     }
 
